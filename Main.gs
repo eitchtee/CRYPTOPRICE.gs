@@ -7,14 +7,17 @@
  * @customfunction
  */
 function CRYPTOPRICE(coin, currency) {
+  // Coingecko expects paramethers to be in lowercase. This handles that.
   coin = coin.toLowerCase();
   currency = currency.toLowerCase();
   
+  // If the currency given by the user is not supported by coingecko, returns a error.
   let isCurrencyValid = checkCurrency(currency);
   if (isCurrencyValid === false) {
     return "currency is invalid";
   }
   
+  // If the coin given by the user is not supported by coingecko, returns a error.
   let coinID = getCoinID(coin)
   if (coinID === false) {
      return "coin is invalid";
@@ -38,21 +41,25 @@ function getCoinID(coinInput) {
   var listJsonData = JSON.parse(listJsonText);
   
   for (var i = 0, len = listJsonData.length; i < len; i++) {
+    // iterate through all of the supported coins and try to find the coin input as an id
     if (listJsonData[i].id === coinInput) {
       return coinInput;
+    // or a symbol
     } else if (listJsonData[i].symbol === coinInput) {
       return listJsonData[i].id;
     }
   }
   
-  return false;
+  return false; // if it can't find a match
 }
 
 
+// check if the input currency is in the list of supported conversion currencies of coingecko
 function checkCurrency(currencyInput) {
   let currenciesListQuery = 'https://api.coingecko.com/api/v3/simple/supported_vs_currencies'
   let response = UrlFetchApp.fetch(currenciesListQuery, {'muteHttpExceptions': true});
   var listJsonText = response.getContentText();
   var listJsonData = JSON.parse(listJsonText);
+  
   return listJsonData.includes(currencyInput);
 }
