@@ -23,7 +23,7 @@ function CRYPTOPRICE(coin, currency) {
      return "coin is invalid";
   }
   
-  let coin_id_query = 'https://api.coingecko.com/api/v3//coins/list'
+  let coin_id_query = 'https://api.coingecko.com/api/v3/coins/list'
   let query = 'https://api.coingecko.com/api/v3/simple/price?ids=' + coinID + '&vs_currencies=' + currency
 
   let response = UrlFetchApp.fetch(query, {'muteHttpExceptions': true});
